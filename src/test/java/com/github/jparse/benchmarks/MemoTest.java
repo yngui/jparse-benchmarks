@@ -40,7 +40,8 @@ import java.util.Map;
 
 import static com.github.jparse.CharParsers.literal;
 import static com.github.jparse.Sequences.fromCharSequence;
-import static com.github.jparse.Sequences.withMemo;
+import static com.github.jparse.StatefulParsers.memo;
+import static com.github.jparse.StatefulSequences.withMemo;
 import static java.util.Objects.requireNonNull;
 
 public class MemoTest {
@@ -70,7 +71,7 @@ public class MemoTest {
                 return rrMod.parse(sequence);
             }
         };
-        rrMod = x.then(rrModRef).map(cast(Object.class)).orelse(x).memo().phrase();
+        rrMod = memo(x.then(rrModRef).map(cast(Object.class)).orelse(x)).phrase();
 
         FluentParser<Character, Object> lrModRef = new FluentParser<Character, Object>() {
             @Override
@@ -78,7 +79,7 @@ public class MemoTest {
                 return lrMod.parse(sequence);
             }
         };
-        lrMod = lrModRef.then(x).map(cast(Object.class)).orelse(x).memo().phrase();
+        lrMod = memo(lrModRef.then(x).map(cast(Object.class)).orelse(x)).phrase();
 
         StringBuilder sb = new StringBuilder(100000);
         for (int i = 0; i < 100000; i++) {

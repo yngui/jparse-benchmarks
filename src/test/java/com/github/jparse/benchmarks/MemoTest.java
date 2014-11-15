@@ -41,7 +41,7 @@ import java.util.Map;
 import static com.github.jparse.CharParsers.literal;
 import static com.github.jparse.Sequences.fromCharSequence;
 import static com.github.jparse.StatefulParsers.memo;
-import static com.github.jparse.StatefulSequences.withMemo;
+import static com.github.jparse.StatefulSequences.stateful;
 import static java.util.Objects.requireNonNull;
 
 public class MemoTest {
@@ -97,13 +97,13 @@ public class MemoTest {
     @BenchmarkOptions(benchmarkRounds = 100, warmupRounds = 50)
     @Test
     public void rrMod() {
-        rrMod.parse(withMemo(sequence));
+        rrMod.parse(stateful(sequence));
     }
 
     @BenchmarkOptions(benchmarkRounds = 100, warmupRounds = 50)
     @Test
     public void lrMod() {
-        lrMod.parse(withMemo(sequence));
+        lrMod.parse(stateful(sequence));
     }
 
     private static <T, U> Function<? super T, ? extends U> cast(final Class<U> cls) {
